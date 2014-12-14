@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Cards ({{ card_list|length }})</h2>
+
+  <ul class="nav nav-pills">
+  {% for set in sets %}
+    <li {% if set_name == set %}class="active"{% endif %}><a href="?set={{ set }}">{{ set }}</a></li>
+  {% endfor %}
+  </ul>
+  <h3>Stats</h4>
+
+  <table class="table table-bordered table-striped">
+    <tr>
+      <td>Owned</td>
+      <td>{{ owned.count }}</td>
+    </tr>
+    <tr>
+      <td>Percentage Owned</td>
+      <td>{{ owned_percentage }}%</td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td>{{ total }}</td>
+    </tr>
+    <tr>
+      <td>Total Percentage</td>
+      <td>{{ total_percentage }}%</td>
+    </tr>
+  </table>
+
+
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>Name</th>
+      <th>Count</th>
+      <th>Elite</th>
+    </tr>
+    {% for card in card_list %}
+    <tr>
+      <td><a href="{{ card.image_url }}">{{ card.name }}</a></td>
+      <td>{{ card.count }}</td>
+      <td>{% if card.elite %}Y{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

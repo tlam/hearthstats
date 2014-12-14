@@ -6,12 +6,14 @@ from django.conf import settings
 from django.db import models
 
 
+SETS = ['Classic', u'Curse of Naxxramas', 'Basic', 'Reward', 'Goblins vs Gnomes']
+
 class Card(models.Model):
     name = models.CharField(max_length=255, unique=True)
     cost = models.IntegerField(default=0)
     card_type = models.CharField(max_length=255, default='')
     rarity = models.CharField(max_length=255, default='')
-    faction = models.CharField(max_length=255, default='')
+    faction = models.CharField(max_length=255, blank=True, default='')
     description = models.CharField(max_length=255, default='')
     mechanics = models.CharField(max_length=255, default='')
     flavour = models.CharField(max_length=255, default='')
@@ -22,6 +24,9 @@ class Card(models.Model):
     hearthstone_id = models.CharField(max_length=255, unique=True)
     count = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return u'{}'.format(self.name)
 
@@ -30,11 +35,10 @@ class Card(models.Model):
         fp = open(os.path.join(settings.BASE_DIR, 'cards', 'fixtures', 'AllSets.json'))
         data = json.loads(fp.read())
         fp.close()
-        sets = ['Classic', u'Curse of Naxxramas', 'Basic', 'Reward', 'Goblins vs Gnomes']
 
         types = []
         for set_name, set_data in data.iteritems():
-            if set_name not in sets:
+            if set_name not in SETS:
                 continue
 
             for card in set_data:
@@ -58,3 +62,6 @@ class Card(models.Model):
                     set_name=set_name,
                     hearthstone_id=card['id'],
                 )
+
+    def image_url(self):
+        return 'http://wow.zamimg.com/images/hearthstone/cards/enus/original/{}.png'.format(self.hearthstone_id)
