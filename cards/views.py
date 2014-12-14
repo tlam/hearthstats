@@ -24,7 +24,10 @@ class CardList(ListView):
         context['set_name'] = set_name
         context['sets'] = SETS
         context['owned'] = cards.filter(count__gt=0)
-        context['owned_percentage'] = '{0:.2f}'.format((context['owned'].count() * 100.0) / cards.count())
+        owned_percentage = 0
+        if cards.count():
+            owned_percentage = (context['owned'].count() * 100.0) / cards.count()
+        context['owned_percentage'] = '{0:.2f}'.format(owned_percentage)
         context['total'] = total
         context['total_percentage'] = '{0:.2f}'.format((total * 100.0) / max_count)
         return context
