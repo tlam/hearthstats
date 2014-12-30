@@ -63,5 +63,26 @@ class Card(models.Model):
                     hearthstone_id=card['id'],
                 )
 
+    @staticmethod
+    def grand_total(set_name=''):
+        if set_name:
+            cards = Card.objects.filter(set_name=set_name)
+        else:
+            cards = Card.objects.all()
+
+        num_owned = 0
+        total = 0
+        for card in cards:
+            num_owned += card.count
+            total += card.max_count
+        return total, cards.count(), num_owned
+
+    @property
+    def max_count(self):
+        if self.elite:
+            return 1
+        else:
+            return 2
+
     def image_url(self):
         return 'http://wow.zamimg.com/images/hearthstone/cards/enus/original/{}.png'.format(self.hearthstone_id)

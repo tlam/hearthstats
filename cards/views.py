@@ -11,21 +11,18 @@ class CardList(ListView):
         context = super(CardList, self).get_context_data(**kwargs)
         set_name = self.request.GET.get('set', '')
         cards = Card.objects.filter(set_name=set_name)
-        max_count = 0
-        total = 0
-        for card in cards:
-            total += card.count
-            if card.elite:
-                max_count += 1
-            else:
-                max_count += 2
+        max_count, total_cards, total = Card.grand_total(set_name)
 
         context['card_list'] = cards
+        context['max_count'] = max_count
         context['set_name'] = set_name
         context['sets'] = SETS
         context['owned'] = cards.filter(count__gt=0)
+        context['owned_diff'] = total_cards - context['owned'].count()
+        context['total_cards'] = total_cards
+        context['total_diff'] = max_count - total
         if cards.count():
-            owned_percentage = (context['owned'].count() * 100.0) / cards.count()
+            owned_percentage = (context['owned'].count() * 100.0) / total_cards
         else:
             owned_percentage = 0
         context['owned_percentage'] = '{0:.2f}'.format(owned_percentage)
