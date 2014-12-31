@@ -42,17 +42,22 @@ class Card(models.Model):
                 continue
 
             for card in set_data:
-                if 'cost' not in card:
+                collectible = card.get('collectible', False)
+                faction = card.get('faction', '')
+                rarity = card.get('rarity', '')
+                if 'cost' not in card or card['type'] == 'Hero Power' or (rarity == '' and faction == '') or not collectible:
                     continue
-                if Card.objects.filter(name=card['name']).count() == 1:
+
+                cards = Card.objects.filter(name=card['name'])
+                if cards.count() == 1:
                     continue
 
                 Card.objects.create(
                     name=card['name'],
                     cost=card['cost'],
                     card_type=card['type'],
-                    rarity=card.get('rarity', ''),
-                    faction=card.get('faction', ''),
+                    rarity=rarity,
+                    faction=faction,
                     description=card.get('text', ''),
                     mechanics=card.get('mechanics', ''),
                     flavour=card.get('flavor', ''),
@@ -62,6 +67,33 @@ class Card(models.Model):
                     set_name=set_name,
                     hearthstone_id=card['id'],
                 )
+
+    @staticmethod
+    def fix():
+        cards = Card.objects.all()
+        for card in cards:
+            if (card.card_type == 'Hero Power') or (card.rarity == '' and card.faction == ''):
+                card.delete()
+
+        fp = open(os.path.join(settings.BASE_DIR, 'cards', 'fixtures', 'AllSets.json'))
+        data = json.loads(fp.read())
+        fp.close()
+
+        for set_name, set_data in data.iteritems():
+            if set_name not in SETS:
+                continue
+
+            for card in set_data:
+                if 'cost' not in card or card['type'] == 'Hero Power':
+                    continue
+
+                if not card.get('collectible', False):
+                    try:
+                        print card['name']
+                        #card_object = Card.objects.get(name=card['name'])
+                        #card_object.delete()
+                    except Card.DoesNotExist:
+                        pass
 
     @staticmethod
     def grand_total(set_name=''):
