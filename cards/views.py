@@ -1,5 +1,5 @@
-from django.views.generic import ListView
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.generic import ListView, TemplateView
 
 from cards.models import Card, SETS
 
@@ -33,3 +33,17 @@ class CardList(ListView):
             total_percentage = 0
         context['total_percentage'] = '{0:.2f}'.format(total_percentage)
         return context
+
+
+class CollectionView(TemplateView):
+
+    def render_to_response(self, context, **response_kwargs):
+        cards = Card.objects.filter(count__gt=0)
+        data = []
+        for card in cards:
+            data.append({
+                'name': card.name,
+                'count': card.count,
+            })
+
+        return JsonResponse(data, safe=False)
