@@ -13,7 +13,7 @@
   <table class="table table-bordered table-striped">
     <tr>
       <td>Owned</td>
-      <td>{{ owned.count }} / {{ total_cards }}</td>
+      <td>{{ owned.count }} / {{ distinct_total }}</td>
       <td>{{ owned_diff }}</td>
     </tr>
     <tr>
@@ -23,7 +23,7 @@
     </tr>
     <tr>
       <td>Total</td>
-      <td>{{ total }} / {{ max_count }}</td>
+      <td>{{ total_owned }} / {{ max_count }}</td>
       <td>{{ total_diff }}</td>
     </tr>
     <tr>
@@ -33,19 +33,25 @@
     </tr>
   </table>
 
+  <div class="row">
+    {% for rarity, stats in rarity.iteritems %}
+    <div class="col-md-3 {{ rarity|lower }}">
+      {{ rarity }} - {{ stats.own }} / {{ stats.total }}
+    </div>
+    {% endfor %}
+  </div>
+
 
   <table class="table table-bordered table-striped">
     <tr>
       <th>Name</th>
       <th>Count</th>
-      <th>Elite</th>
       <th>Rarity</th>
     </tr>
     {% for card in card_list %}
     <tr>
       <td><a href="{{ card.image_url }}">{{ card.name }}</a></td>
       <td>{{ card.count }} / {{ card.max_count }}</td>
-      <td>{% if card.elite %}Y{% endif %}</td>
       <td class="{{ card.rarity|lower }}">{{ card.rarity }}</td>
     </tr>
     {% endfor %}

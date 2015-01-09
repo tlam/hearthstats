@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import json
 import pprint
 import os
@@ -37,12 +38,25 @@ class Card(models.Model):
         else:
             cards = Card.objects.all()
 
-        num_owned = 0
-        total = 0
+        rarity = [
+            ('Common', {'own': 0, 'total': 0}),
+            ('Rare', {'own': 0, 'total': 0}),
+            ('Epic', {'own': 0, 'total': 0}),
+            ('Legendary', {'own': 0, 'total': 0}),
+        ]
+        output = {
+            'total_owned': 0,
+            'rarity': OrderedDict(rarity),
+            'total': 0,
+        }
         for card in cards:
-            num_owned += card.count
-            total += card.max_count
-        return total, cards.count(), num_owned
+            output['rarity'][card.rarity]['own'] += card.count
+            output['rarity'][card.rarity]['total'] += card.max_count
+            output['total_owned'] += card.count
+            output['total'] += card.max_count
+
+        output['distinct_total'] = cards.count()
+        return output
 
     @property
     def max_count(self):

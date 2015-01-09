@@ -1,3 +1,7 @@
+.common {
+  color: #808080;
+}
+
 .epic {
   color: #C71585;
 }
@@ -8,4 +12,8 @@
 
 .rare {
   color: #0000FF;
+}
+
+div.row {
+  margin-bottom: 1em;
 }
