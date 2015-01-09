@@ -50,6 +50,8 @@ class Card(models.Model):
             'total': 0,
         }
         for card in cards:
+            if card.rarity == 'Free':
+                continue
             output['rarity'][card.rarity]['own'] += card.count
             output['rarity'][card.rarity]['total'] += card.max_count
             output['total_owned'] += card.count
