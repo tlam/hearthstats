@@ -7,7 +7,7 @@ from django.conf import settings
 from django.db import models
 
 
-SETS = ['Classic', u'Curse of Naxxramas', 'Basic', 'Reward', 'Goblins vs Gnomes']
+SETS = ['Classic', u'Curse of Naxxramas', 'Basic', 'Reward', 'Goblins vs Gnomes', 'The Grand Tournament']
 
 class Card(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -50,7 +50,7 @@ class Card(models.Model):
             'total': 0,
         }
         for card in cards:
-            if card.rarity == 'Free':
+            if card.rarity in ['', 'Free']:
                 continue
             output['rarity'][card.rarity]['own'] += card.count
             output['rarity'][card.rarity]['total'] += card.max_count
