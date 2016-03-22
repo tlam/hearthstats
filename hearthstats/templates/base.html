@@ -1,14 +1,16 @@
+{% load staticfiles %}
 <html ng-app="hearthstats-app">
   <head>
+    <title>Hearthstone Stats</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/hearthstats.css" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/hearthstats.css' %}" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
     <script src="https://www.google.com/jsapi" type="text/javascript"></script>
     <script type="text/javascript">
       google.load('visualization', '1', {packages: ['corechart']});
     </script>
-    <script src="{{ STATIC_URL }}js/hearthstats.js"></script>
+    <script src="{% static 'js/hearthstats.js' %}"></script>
   </head>
   <body>
     {% if messages %}
