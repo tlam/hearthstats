@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.views.generic import ListView, TemplateView
 
 from cards.models import Card, SETS
+from utils import constants
 
 
 class CardList(ListView):
@@ -19,6 +20,7 @@ class CardList(ListView):
         context['card_list'] = cards
         context['distinct_total'] = distinct_total 
         context['max_count'] = max_count
+        context['set_code'] = {v: k for k, v in constants.SETS_MAP.items()}.get(set_name, '')
         context['set_name'] = set_name
         context['sets'] = SETS
         context['owned'] = cards.filter(count__gt=0)
@@ -50,4 +52,15 @@ class CollectionView(TemplateView):
                 'count': card.count,
             })
 
+        return JsonResponse(data, safe=False)
+
+
+class SetRarityView(TemplateView):
+
+    def render_to_response(self, context, **response_kwargs):
+        set_name = context['set_name']
+        if set_name in constants.SETS_MAP:
+            data = Card.grand_total(constants.SETS_MAP[set_name])
+        else:
+            data = []
         return JsonResponse(data, safe=False)

@@ -5,15 +5,21 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from cards.models import Card, SETS
+from utils.load_cards import LoadCards
+
+SETS_MAP = {
+    'EXPERT1': 'Classic',
+    'GVG': 'Goblins vs Gnomes',
+    'TGT': 'The Grand Tournament',
+}
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        fp = open(os.path.join(settings.BASE_DIR, 'cards', 'fixtures', 'AllSets.json'))
-        data = json.loads(fp.read())
-        fp.close()
+        LoadCards().process()
 
+        '''
         for set_name, set_data in data.iteritems():
             if set_name not in SETS:
                 continue
@@ -44,3 +50,4 @@ class Command(BaseCommand):
                     set_name=set_name,
                     hearthstone_id=card['id'],
                 )
+        '''

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div ng-controller="RarityCtrl" code="{{ set_code }}">
   <h2>Cards ({{ card_list|length }})</h2>
 
   <ul class="nav nav-pills">
@@ -37,10 +38,11 @@
     {% for rarity, stats in rarity.iteritems %}
     <div class="col-md-3 {{ rarity|lower }}">
       {{ rarity }} - {{ stats.own }} / {{ stats.total }}
+      <div id="{{ rarity|lower }}-chart">
+      </div>
     </div>
     {% endfor %}
   </div>
-
 
   <table class="table table-bordered table-striped">
     <tr>
@@ -56,4 +58,5 @@
     </tr>
     {% endfor %}
   </table>
+</div>
 {% endblock %}

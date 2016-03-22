@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'hearthstats',
     'cards',
+    'utils',
 )
 
 MIDDLEWARE_CLASSES = (
