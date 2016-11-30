@@ -7,7 +7,12 @@ from django.conf import settings
 from django.db import models
 
 
-SETS = ['Classic', 'Goblins vs Gnomes', 'The Grand Tournament', 'Whispers of the Old God']
+SETS = [
+    'Classic',
+    'Goblins vs Gnomes',
+    'Mean Streets of Gadgetzan',
+    'The Grand Tournament',
+    'Whispers of the Old God']
 
 class Card(models.Model):
     name = models.CharField(max_length=255, unique=True)
