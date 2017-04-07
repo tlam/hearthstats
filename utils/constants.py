@@ -4,4 +4,5 @@ SETS_MAP = {
     'GVG': 'Goblins vs Gnomes',
     'OG': 'Whispers of the Old God',
     'TGT': 'The Grand Tournament',
+    'UNGORO': "Un'Goro"
 }

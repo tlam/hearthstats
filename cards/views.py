@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.views.generic import ListView, TemplateView
 
-from cards.models import Card, SETS
+from cards.models import Card
 from utils import constants
 
 
@@ -22,7 +22,7 @@ class CardList(ListView):
         context['max_count'] = max_count
         context['set_code'] = {v: k for k, v in constants.SETS_MAP.items()}.get(set_name, '')
         context['set_name'] = set_name
-        context['sets'] = SETS
+        context['sets'] = constants.SETS_MAP.values()
         context['owned'] = cards.filter(count__gt=0)
         context['owned_diff'] = distinct_total - context['owned'].count()
         context['total_diff'] = max_count - total_owned

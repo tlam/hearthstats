@@ -1,6 +1,6 @@
 import requests
 
-from cards.models import Card, SETS
+from cards.models import Card
 from utils import constants
 
 
@@ -28,7 +28,7 @@ class LoadCards(object):
                     flavour=card['flavor'],
                     attack=card.get('attack', 0),
                     health=card.get('health', 0),
-                    elite='LENGENDARY' == card['rarity'],
+                    elite='LEGENDARY' == card['rarity'],
                     set_name=constants.SETS_MAP[card['set']],
                     hearthstone_id=card['id'],
                 )
