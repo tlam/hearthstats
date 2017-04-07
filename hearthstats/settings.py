@@ -25,7 +25,7 @@ SECRET_KEY = 'ylgu+ki&4r)*-1t%z_nb81t^!!-7t===yv9k3%x&qayeil9)l7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hearthstonestats.herokuapp.com']
 
 
 # Application definition
