@@ -66,4 +66,4 @@ class Card(models.Model):
             return 2
 
     def image_url(self):
-        return 'http://wow.zamimg.com/images/hearthstone/cards/enus/original/{}.png'.format(self.hearthstone_id)
+        return 'https://art.hearthstonejson.com/v1/render/latest/enUS/256x/{}.png'.format(self.hearthstone_id)
