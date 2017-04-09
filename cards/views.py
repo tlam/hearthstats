@@ -5,12 +5,13 @@ from cards.models import Card
 from expansions.models import Expansion
 
 
-class CardList(ListView):
+class CardList(TemplateView):
     model = Card
+    template_name = 'cards/card_list.html'
 
     def get_context_data(self, **kwargs):
         context = super(CardList, self).get_context_data(**kwargs)
-        set_code = self.request.GET.get('set', '')
+        set_code = kwargs.get('set_code', '')
         expansions = Expansion.objects.all()
 
         try:

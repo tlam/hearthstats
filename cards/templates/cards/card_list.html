@@ -6,7 +6,9 @@
 
   <ul class="nav nav-pills">
   {% for expansion in expansions %}
-    <li {% if set_code == expansion.code %}class="active"{% endif %}><a href="?set={{ expansion.code }}">{{ expansion.name }}</a></li>
+    <li {% if set_code == expansion.code %}class="active"{% endif %}>
+      <a href="{% url 'cards:show' expansion.code %}">{{ expansion.name }}</a>
+    </li>
   {% endfor %}
   </ul>
   <h3>Stats</h4>
