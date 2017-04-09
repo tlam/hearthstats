@@ -1,9 +1,5 @@
 from collections import OrderedDict
-import json
-import pprint
-import os
 
-from django.conf import settings
 from django.db import models
 
 

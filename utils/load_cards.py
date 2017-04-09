@@ -1,7 +1,9 @@
+import collections
+
 import requests
 
 from cards.models import Card
-from utils import constants
+from expansions.models import Expansion
 
 
 class LoadCards(object):
@@ -11,10 +13,12 @@ class LoadCards(object):
         response = requests.get(url)
         data = response.json()
 
-        sets = set()
+        expansions = collections.OrderedDict()
+        for expansion in Expansion.objects.all():
+            expansions[expansion.code] = expansion.name
         count = 0
         for card in data:
-            if card['set'] in constants.SETS_MAP:
+            if card['set'] in expansions:
                 cards = Card.objects.filter(name=card['name'])
                 if cards.count() == 1:
                     continue
@@ -29,7 +33,7 @@ class LoadCards(object):
                     attack=card.get('attack', 0),
                     health=card.get('health', 0),
                     elite='LEGENDARY' == card['rarity'],
-                    set_name=constants.SETS_MAP[card['set']],
+                    set_name=expansions[card['set']],
                     hearthstone_id=card['id'],
                 )
                 count += 1

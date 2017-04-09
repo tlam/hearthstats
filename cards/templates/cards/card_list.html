@@ -5,8 +5,8 @@
   <h2>Cards ({{ card_list|length }})</h2>
 
   <ul class="nav nav-pills">
-  {% for set in sets %}
-    <li {% if set_name == set %}class="active"{% endif %}><a href="?set={{ set }}">{{ set }}</a></li>
+  {% for expansion in expansions %}
+    <li {% if set_code == expansion.code %}class="active"{% endif %}><a href="?set={{ expansion.code }}">{{ expansion.name }}</a></li>
   {% endfor %}
   </ul>
   <h3>Stats</h4>

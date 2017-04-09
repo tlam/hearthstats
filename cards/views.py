@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views.generic import ListView, TemplateView
 
 from cards.models import Card
-from utils import constants
+from expansions.models import Expansion
 
 
 class CardList(ListView):
@@ -10,26 +10,29 @@ class CardList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(CardList, self).get_context_data(**kwargs)
-        set_name = self.request.GET.get('set', '')
-        cards = Card.objects.filter(set_name=set_name)
-        stats = Card.grand_total(set_name)
-        max_count = stats['total']
-        distinct_total = stats['distinct_total']
-        total_owned = stats['total_owned']
+        set_code = self.request.GET.get('set', '')
+        expansions = Expansion.objects.all()
+
+        try:
+            expansion = Expansion.objects.get(code=set_code)
+            stats = Card.grand_total(expansion.name)
+            cards = Card.objects.filter(set_name=expansion.name)
+        except Expansion.DoesNotExist:
+            stats = Card.grand_total('')
+            cards = Card.objects.all()
 
         context['card_list'] = cards
-        context['distinct_total'] = distinct_total 
+        max_count = stats['total']
+        distinct_total = stats['distinct_total']
+        context['distinct_total'] = distinct_total
         context['max_count'] = max_count
-        context['set_code'] = {v: k for k, v in constants.SETS_MAP.items()}.get(set_name, '')
-        context['set_name'] = set_name
-        context['sets'] = constants.SETS_MAP.values()
+        total_owned = stats['total_owned']
+        context['set_code'] = set_code
+        context['expansions'] = expansions
         context['owned'] = cards.filter(count__gt=0)
+        owned_percentage = (context['owned'].count() * 100.0) / distinct_total
         context['owned_diff'] = distinct_total - context['owned'].count()
         context['total_diff'] = max_count - total_owned
-        if cards.count():
-            owned_percentage = (context['owned'].count() * 100.0) / distinct_total 
-        else:
-            owned_percentage = 0
         context['owned_percentage'] = '{0:.2f}'.format(owned_percentage)
         context['rarity'] = stats['rarity']
         context['total_owned'] = total_owned
@@ -58,9 +61,10 @@ class CollectionView(TemplateView):
 class SetRarityView(TemplateView):
 
     def render_to_response(self, context, **response_kwargs):
-        set_name = context['set_name']
-        if set_name in constants.SETS_MAP:
-            data = Card.grand_total(constants.SETS_MAP[set_name])
-        else:
+        set_code = context['set_code']
+        try:
+            expansion = Expansion.objects.get(code=set_code)
+            data = Card.grand_total(expansion.name)
+        except Expansion.DoesNotExist:
             data = []
         return JsonResponse(data, safe=False)
