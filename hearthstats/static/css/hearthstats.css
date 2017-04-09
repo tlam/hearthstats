@@ -17,3 +17,7 @@
 div.row {
   margin-bottom: 1em;
 }
+
+td a {
+  cursor: pointer;
+}

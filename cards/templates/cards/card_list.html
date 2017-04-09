@@ -52,11 +52,18 @@
     </tr>
     {% for card in card_list %}
     <tr>
-      <td><a href="{{ card.image_url }}">{{ card.name }}</a></td>
+      <td>
+        <a class="card {{ card.rarity|lower }}"
+           data-toggle="modal"
+           data-target="#image-modal"
+           data-content="{{ card.image_url }}"
+           data-title="{{ card.name }}">{{ card.name }}</a>
+      </td>
       <td>{{ card.count }} / {{ card.max_count }}</td>
       <td class="{{ card.rarity|lower }}">{{ card.rarity }}</td>
     </tr>
     {% endfor %}
   </table>
+  {% include "cards/image_modal.html" %}
 </div>
 {% endblock %}
