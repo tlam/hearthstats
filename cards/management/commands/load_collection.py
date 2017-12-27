@@ -20,4 +20,4 @@ class Command(BaseCommand):
                 card.count = entry['count']
                 card.save()
             except Card.DoesNotExist:
-                print '{} does not exist'.format(entry['name'])
+                print('{} does not exist'.format(entry['name']))

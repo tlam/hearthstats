@@ -9,4 +9,5 @@ from expansions.models import Expansion
 class ExpansionAdmin(admin.ModelAdmin):
     list_display = ('name', 'release_date',)
 
+
 admin.site.register(Expansion, ExpansionAdmin)

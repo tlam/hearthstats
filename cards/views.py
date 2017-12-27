@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.views.generic import ListView, TemplateView
+from django.views.generic import TemplateView
 
 from cards.models import Card
 from expansions.models import Expansion
@@ -31,7 +31,10 @@ class CardList(TemplateView):
         context['set_code'] = set_code
         context['expansions'] = expansions
         context['owned'] = cards.filter(count__gt=0)
-        owned_percentage = (context['owned'].count() * 100.0) / distinct_total
+        if distinct_total:
+            owned_percentage = (context['owned'].count() * 100.0) / distinct_total
+        else:
+            owned_percentage = 0
         context['owned_diff'] = distinct_total - context['owned'].count()
         context['total_diff'] = max_count - total_owned
         context['owned_percentage'] = '{0:.2f}'.format(owned_percentage)

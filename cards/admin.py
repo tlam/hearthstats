@@ -8,4 +8,5 @@ class CardAdmin(admin.ModelAdmin):
     list_display = ('name', 'count',)
     search_fields = ['name']
 
+
 admin.site.register(Card, CardAdmin)
