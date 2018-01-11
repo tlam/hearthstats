@@ -37,7 +37,7 @@
   </table>
 
   <div class="row">
-    {% for rarity, stats in rarity.iteritems %}
+    {% for rarity, stats in rarity.items %}
     <div class="col-md-3 {{ rarity|lower }}">
       {{ rarity }} - {{ stats.own }} / {{ stats.total }}
       <div id="{{ rarity|lower }}-chart">
