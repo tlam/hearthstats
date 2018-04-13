@@ -18,7 +18,7 @@ class LoadCards(object):
             expansions[expansion.code] = expansion.name
         count = 0
         for card in data:
-            if card['set'] in expansions:
+            if card.get('set') in expansions:
                 cards = Card.objects.filter(name=card['name'])
                 if cards.count() == 1:
                     continue
