@@ -34,7 +34,7 @@ app.controller('RarityCtrl', function($scope, $http, $attrs) {
 });
 
 $(document).ready(function(){
-  $('a.card').on('click', function() {
+  $('a.hearthstone-card').on('click', function() {
     $('.modal-title').html('<span>' + $(this).attr('data-title') + '</span>');
     $('.modal-body').html('<img src="' + $(this).attr('data-content') + '" />');
   });

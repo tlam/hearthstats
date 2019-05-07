@@ -22,8 +22,8 @@ class Card(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
-        return u'{}'.format(self.name)
+    def __str__(self):
+        return self.name
 
     @staticmethod
     def grand_total(set_name=''):

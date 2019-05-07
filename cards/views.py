@@ -10,6 +10,7 @@ class CardList(TemplateView):
     template_name = 'cards/card_list.html'
 
     def get_context_data(self, **kwargs):
+        rarity = self.request.GET.get('rarity', '')
         context = super(CardList, self).get_context_data(**kwargs)
         set_code = kwargs.get('set_code', '')
         expansions = Expansion.objects.all()
@@ -17,7 +18,10 @@ class CardList(TemplateView):
         try:
             expansion = Expansion.objects.get(code=set_code)
             stats = Card.grand_total(expansion.name)
-            cards = Card.objects.filter(set_name=expansion.name)
+            if rarity:
+                cards = Card.objects.filter(set_name=expansion.name, rarity=rarity)
+            else:
+                cards = Card.objects.filter(set_name=expansion.name)
         except Expansion.DoesNotExist:
             stats = Card.grand_total('')
             cards = Card.objects.all()
