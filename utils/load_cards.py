@@ -30,7 +30,7 @@ class LoadCards(object):
 
                 Card.objects.create(
                     name=card['name'],
-                    cost=card['cost'],
+                    cost=card.get('cost', 0),
                     card_type=card['type'].title(),
                     rarity=card['rarity'].title(),
                     description=card.get('text', ''),
