@@ -34,7 +34,7 @@ class LoadCards(object):
                     card_type=card['type'].title(),
                     rarity=card.get('rarity', '').title(),
                     description=card.get('text', ''),
-                    flavour=card.get('flavor', ''),
+                    flavour=(card.get('flavor', '') or '')[:250],
                     attack=card.get('attack', 0),
                     health=card.get('health', 0),
                     elite='LEGENDARY' == card.get('rarity', ''),
