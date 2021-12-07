@@ -19,8 +19,10 @@ class LoadCards(object):
         for expansion in Expansion.objects.all():
             expansions[expansion.code] = expansion.name
         count = 0
+        enpansion_codes = expansions.keys()
+        
         for card in data:
-            if card['type'] in self.INVALID_CARD_TYPES:
+            if card['set'] not in enpansion_codes:
                 continue
 
             if card.get('set') in expansions:
